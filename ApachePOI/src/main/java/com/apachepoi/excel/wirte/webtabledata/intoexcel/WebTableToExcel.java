@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -17,13 +18,18 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class WebTableToExcel {
 	static WebDriver driver;
 
-	@BeforeClass
-	public static void main(String[] args) throws Exception {
+	@Test
+	public static void webTableToExcel() throws Exception {
 		WebDriverManager.edgedriver().setup();
 		driver = new EdgeDriver();
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		driver.get("https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population");
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+
+		js.executeScript("window.scrollBy(0,1000)");
+
 		String path = ".\\DataFiles\\Population.xlsx";
 		XLUtility xlUtility = new XLUtility(path);
 		xlUtility.setCellData("Sheet1", 0, 0, "Country");
@@ -32,8 +38,8 @@ public class WebTableToExcel {
 		xlUtility.setCellData("Sheet1", 0, 3, "Date");
 		xlUtility.setCellData("Sheet1", 0, 4, "Source");
 
-		WebElement tables = driver
-				.findElement(By.xpath("//table[@class='wikitable sortable plainrowheaders jquery-tablesorter']/tbody"));
+		WebElement tables = driver.findElement(By.xpath(
+				"//table[@class='wikitable sortable sticky-header sort-under mw-datatable col2left col6left jquery-tablesorter']/tbody"));
 		int rows = tables.findElements(By.xpath("tr")).size();
 		for (int r = 1; r <= rows; r++) {
 			String country = tables.findElement(By.xpath("tr[" + r + "]/td[1]")).getText();
@@ -43,11 +49,11 @@ public class WebTableToExcel {
 			String source = tables.findElement(By.xpath("tr[" + r + "]/td[5]")).getText();
 
 			System.out.println(country + population + perofworld + date + source);
-			xlUtility.setCellData("Sheet1", r, 0, country);
-			xlUtility.setCellData("Sheet1", r, 1, population);
-			xlUtility.setCellData("Sheet1", r, 2, perofworld);
-			xlUtility.setCellData("Sheet1", r, 3, date);
-			xlUtility.setCellData("Sheet1", r, 4, source);
+			xlUtility.setCellData1("Sheet1", r, 0, country);
+			xlUtility.setCellData1("Sheet1", r, 1, population);
+			xlUtility.setCellData1("Sheet1", r, 2, perofworld);
+			xlUtility.setCellData1("Sheet1", r, 3, date);
+			xlUtility.setCellData1("Sheet1", r, 4, source);
 
 		}
 		System.out.println("Web scraping is done...");

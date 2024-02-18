@@ -3,13 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.apachepoi.excel.datadriventest.DataDrivenTest">
+      <class name="com.apachepoi.excel.wirte.webtabledata.intoexcel.WebTableToExcel">
         <methods>
-          <include name="loginTest" invocation-numbers="0"/>
-          <include name="tearDown"/>
-          <include name="setUp"/>
+          <include name="test"/>
         </methods>
-      </class> <!-- com.apachepoi.excel.datadriventest.DataDrivenTest -->
+      </class> <!-- com.apachepoi.excel.wirte.webtabledata.intoexcel.WebTableToExcel -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
